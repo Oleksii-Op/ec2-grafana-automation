@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for grafana-node
+grafana_repos:
+  - "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main"

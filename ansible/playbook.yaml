@@ -1,0 +1,40 @@
+---
+- name: Install Grafana and get X.509 certs from Lets Encrypt
+  hosts: all
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+
+    - name: Obtain public IP address (if not provided)
+      uri:
+        url: https://ifconfig.co/ip
+        return_content: yes
+        status_code: 200
+        timeout: 5
+      register: detected_ip
+      when: public_ip is not defined
+
+    - name: Set public IP fact
+      set_fact:
+        public_ip: "{{ detected_ip.content | trim }}"
+      when: public_ip is not defined
+
+    - name: Show public IP address
+      debug:
+        msg: "Using public IP address: {{ public_ip }}"
+
+  roles:
+    - role: grafana
+      tags: grafana
+    - role: certbot
+      tags: certbot
+
+  post_tasks:
+    - name: Restart grafana after copying Lets Encrypt certs
+      service:
+        name: grafana-server
+        state: restarted

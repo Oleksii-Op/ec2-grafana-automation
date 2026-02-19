@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for certbot-shortlived-ip-certs
+env_dir: /opt/certbot/
+certbot_file_dest: /usr/local/bin/certbot

@@ -1,0 +1,57 @@
+#SPDX-License-Identifier: MIT-0
+# tasks file for grafana-node
+---
+- name: Install prerequisite packages
+  ansible.builtin.package:
+    name:
+      - apt-transport-https
+      - wget
+      - gnupg
+    state: present
+    update_cache: true
+
+- name: Import the GPG key
+  file:
+    path: "/etc/apt/keyrings/"
+    state: directory
+    mode: '0755'
+
+- name: Download Grafana GPG key
+  ansible.builtin.get_url:
+    url: https://apt.grafana.com/gpg.key
+    dest: /tmp/grafana.gpg
+    mode: '0644'
+
+- name: Convert GPG key to dearmored format
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /etc/apt/keyrings/grafana.gpg /tmp/grafana.gpg
+  args:
+    creates: /etc/apt/keyrings/grafana.gpg
+
+- name: Add Grafana repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    filename: grafana
+  loop: "{{ grafana_repos }}"
+
+- name: Install Grafana OSS
+  package:
+    name: grafana
+    update_cache: true
+  notify: Restart grafana
+
+- name: Copy templated config file
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: root
+    group: grafana
+  notify: Restart grafana
+
+- name: Ensure Grafana started and enabled
+  systemd:
+    name: grafana-server
+    enabled: true
+    state: started
+...

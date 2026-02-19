@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for grafana-node
+- name: Restart grafana
+  service:
+    name: grafana-server
+    state: restarted

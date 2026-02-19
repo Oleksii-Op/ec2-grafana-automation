@@ -1,0 +1,9 @@
+[server]
+http_addr =
+http_port = 3000
+domain = mysite.com
+root_url = https://{{ public_ip }}:3000
+cert_key = /etc/grafana/grafana.key
+cert_file = /etc/grafana/grafana-fullchain.pem
+enforce_domain = False
+protocol = https
