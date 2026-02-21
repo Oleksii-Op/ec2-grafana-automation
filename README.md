@@ -82,14 +82,27 @@ The Ansible playbook performs:
 
 ## Deployment Steps
 
+### Prepare the environment
+1. Clone this repo on your local machine
+2. Create a virtual python3 environment with `$ python3 -m .venv venv` in the root folder of this repo
+```bash
+├── terraform/
+├── ansible/
+└── .venv/
+```
+3. Activate the environment `$ source .venv/bin/activate`
+4. Verify that the environment is activated `$ which python3`
+5. Upgrade pip `$ pip install --upgrade pip`
+6. Install ansible `$ pip install ansible`
+
 ### Generate SSH keys
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/aws_ec2
+$ ssh-keygen -t ed25519 -f ~/.ssh/aws_ec2
 ```
 
 ### Update Terraform Variables
 ```bash
-terraform/variables.tf
+$ terraform/variables.tf
 ```
 
 Set 

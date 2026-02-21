@@ -4,7 +4,7 @@ resource "aws_instance" "webserver" {
 
   tags = {
     Name        = "webserver"
-    Description = "An Node Exporter server"
+    Description = "A Grafana server"
   }
 
   key_name               = aws_key_pair.aws_ec2_key.id
