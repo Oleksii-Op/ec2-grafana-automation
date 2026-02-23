@@ -9,3 +9,7 @@
 *.xml
 *.iml
 .idea/
+terraform.tfstate*
+terraform-provider*
+LICENSE.txt
+selections.json

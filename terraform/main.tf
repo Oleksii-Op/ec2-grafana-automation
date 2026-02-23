@@ -2,6 +2,14 @@ resource "aws_instance" "webserver" {
   ami           = var.debian-ami
   instance_type = var.instance_type
 
+  root_block_device {
+    encrypted = true
+  }
+
+  metadata_options {
+    http_tokens = "required"
+  }
+
   tags = {
     Name        = "webserver"
     Description = "A Grafana server"
@@ -9,6 +17,18 @@ resource "aws_instance" "webserver" {
 
   key_name               = aws_key_pair.aws_ec2_key.id
   vpc_security_group_ids = [aws_security_group.ssh_grafana_access.id]
+}
+
+data "http" "get-ip-address" {
+  url = "https://ifconfig.co/ip"
+
+    request_headers = {
+    Accept = "application/json"
+  }
+}
+
+locals {
+  ip_address = trimspace(data.http.get-ip-address.body)
 }
 
 resource "aws_security_group" "ssh_grafana_access" {
@@ -20,7 +40,7 @@ resource "aws_security_group" "ssh_grafana_access" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${local.ip_address}/32"]
   }
 
   ingress {

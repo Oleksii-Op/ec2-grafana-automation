@@ -1,0 +1,3 @@
+misconfigurations:
+  - id: AWS-0104
+    statement: Security group rule allows unrestricted egress to any IP address.
