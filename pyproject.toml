@@ -1,0 +1,9 @@
+[project]
+name = "ec2-grafana-certbot"
+version = "0.1.0"
+description = "Automating AWS EC2 Deployment with Grafana & Let's Encrypt"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pre-commit>=4.5.1",
+]
