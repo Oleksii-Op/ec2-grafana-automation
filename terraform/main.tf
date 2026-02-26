@@ -1,5 +1,21 @@
+data "aws_ami" "debian13" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["debian-13-amd64-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["136693071363"] # Debian official
+}
+
 resource "aws_instance" "webserver" {
-  ami           = var.debian-ami
+  ami           = data.aws_ami.debian13.id
   instance_type = var.instance_type
 
   root_block_device {
@@ -28,7 +44,7 @@ data "http" "get-ip-address" {
 }
 
 locals {
-  ip_address = trimspace(data.http.get-ip-address.body)
+  ip_address = trimspace(data.http.get-ip-address.response_body)
 }
 
 resource "aws_security_group" "ssh_grafana_access" {
