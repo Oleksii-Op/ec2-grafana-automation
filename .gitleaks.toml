@@ -1,0 +1,5 @@
+[[rules]]
+id = "terraform-generic-secret"
+description = "Terraform variable containing potential secret"
+regex = '''variable\s+"(?i)(.*(secret|token|key|password).*)"\s*\{[^}]*default\s*=\s*"([A-Za-z0-9\/+=]{16,})"'''
+tags = ["terraform", "secret"]
